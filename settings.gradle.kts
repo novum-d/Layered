@@ -1,4 +1,6 @@
 pluginManagement {
+
+  includeBuild("build-logic")
   repositories {
     google {
       content {
@@ -21,5 +23,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Layered"
 include(":app")
-include(":usecase")
-include(":service")
+include(":core:model")
+include(":core:data")
+include(":core:domain")
