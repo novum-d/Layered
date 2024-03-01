@@ -23,30 +23,30 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
 class AndroidFeatureConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) {
-        with(target) {
-            pluginManager.apply {
-                apply("layered.android.library")
-                apply("layered.android.hilt")
-            }
-            extensions.configure<LibraryExtension> {
-                defaultConfig {
-                    testInstrumentationRunner =
-                        "io.novumd.layered.core.testing.NiaTestRunner"
-                }
-                configureGradleManagedDevices(this)
-            }
-
-            dependencies {
-                add("implementation", project(":core:ui"))
-                add("implementation", project(":core:designsystem"))
-
-                add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
-                add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
-                add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
-
-                add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
-            }
+  override fun apply(target: Project) {
+    with(target) {
+      pluginManager.apply {
+        apply("layered.android.library")
+        apply("layered.android.hilt")
+      }
+      extensions.configure<LibraryExtension> {
+        defaultConfig {
+          testInstrumentationRunner =
+            "io.novumd.layered.core.testing.NiaTestRunner"
         }
+        configureGradleManagedDevices(this)
+      }
+
+      dependencies {
+        add("implementation", project(":core:ui"))
+        add("implementation", project(":core:designsystem"))
+
+        add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
+        add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
+        add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
+
+        add("implementation", libs.findLibrary("androidx.tracing.ktx").get())
+      }
     }
+  }
 }

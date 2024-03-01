@@ -62,10 +62,6 @@ gradlePlugin {
       id = "layered.android.application"
       implementationClass = "AndroidApplicationConventionPlugin"
     }
-    // register("androidApplicationJacoco") {
-    //   id = "layered.android.application.jacoco"
-    //   implementationClass = "AndroidApplicationJacocoConventionPlugin"
-    // }
     register("androidLibraryCompose") {
       id = "layered.android.library.compose"
       implementationClass = "AndroidLibraryComposeConventionPlugin"
@@ -78,10 +74,6 @@ gradlePlugin {
       id = "layered.android.feature"
       implementationClass = "AndroidFeatureConventionPlugin"
     }
-    // register("androidLibraryJacoco") {
-    //   id = "layered.android.library.jacoco"
-    //   implementationClass = "AndroidLibraryJacocoConventionPlugin"
-    // }
     register("androidTest") {
       id = "layered.android.test"
       implementationClass = "AndroidTestConventionPlugin"
@@ -90,14 +82,6 @@ gradlePlugin {
       id = "layered.android.hilt"
       implementationClass = "AndroidHiltConventionPlugin"
     }
-    // register("androidRoom") {
-    //   id = "layered.android.room"
-    //   implementationClass = "AndroidRoomConventionPlugin"
-    // }
-    // register("androidFirebase") {
-    //   id = "layered.android.application.firebase"
-    //   implementationClass = "AndroidApplicationFirebaseConventionPlugin"
-    // }
     register("androidFlavors") {
       id = "layered.android.application.flavors"
       implementationClass = "AndroidApplicationFlavorsConventionPlugin"
@@ -110,5 +94,21 @@ gradlePlugin {
       id = "layered.jvm.library"
       implementationClass = "JvmLibraryConventionPlugin"
     }
+    // register("androidApplicationJacoco") {
+    //   id = "layered.android.application.jacoco"
+    //   implementationClass = "AndroidApplicationJacocoConventionPlugin"
+    // }
+    // register("androidLibraryJacoco") {
+    //   id = "layered.android.library.jacoco"
+    //   implementationClass = "AndroidLibraryJacocoConventionPlugin"
+    // }
+    // register("androidRoom") {
+    //   id = "layered.android.room"
+    //   implementationClass = "AndroidRoomConventionPlugin"
+    // }
+    // register("androidFirebase") {
+    //   id = "layered.android.application.firebase"
+    //   implementationClass = "AndroidApplicationFirebaseConventionPlugin"
+    // }
   }
 }
