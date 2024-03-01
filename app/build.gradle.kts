@@ -36,7 +36,7 @@ android {
     val release = getByName("release") {
       isMinifyEnabled = true
       applicationIdSuffix = LayeredBuildType.RELEASE.applicationIdSuffix
-      // proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
       // To publish on the Play store a private signing key is required, but to allow anyone
       // who clones the code to sign and run the release variant, use the debug signing key.
@@ -50,10 +50,10 @@ android {
       initWith(release)
       matchingFallbacks.add("release")
       // Debug key signing is available to everyone.
-      // signingConfig = signingConfigs.getByName("debug")
+      signingConfig = signingConfigs.getByName("debug")
       // Only use benchmark proguard rules
-      // proguardFiles("benchmark-rules.pro")
-      // isMinifyEnabled = true
+      proguardFiles("benchmark-rules.pro")
+      isMinifyEnabled = true
       applicationIdSuffix = LayeredBuildType.BENCHMARK.applicationIdSuffix
     }
   }
@@ -80,10 +80,10 @@ dependencies {
   // implementation(projects.feature.settings)
 
   // implementation(projects.core.common)
-  // implementation(projects.core.ui)
+  implementation(projects.core.ui)
   // implementation(projects.core.designsystem)
-  // implementation(projects.core.data)
-  // implementation(projects.core.model)
+  implementation(projects.core.data)
+  implementation(projects.core.model)
   // implementation(projects.core.analytics)
   // implementation(projects.sync.work)
 
@@ -153,4 +153,3 @@ detekt {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
   kotlinOptions.freeCompilerArgs = listOf("-Xcontext-receivers")
 }
-

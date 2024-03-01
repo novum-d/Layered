@@ -65,6 +65,10 @@ arrow = "1.2.1"
 kotest = "5.8.0"
 detekt = "1.23.4"
 composeRules = "0.0.26"
+kotlinVersion = "1.9.0"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+materialVersion = "1.11.0"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -121,7 +125,7 @@ lint-tests = { group = "com.android.tools.lint", name = "lint-tests", version.re
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileinstaller" }
 androidx-dataStore-core = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
 
-# kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 # kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 # firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 # firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
@@ -166,6 +170,9 @@ kotest-assertionsArrow = { module = "io.kotest.extensions:kotest-assertions-arro
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-compose-rules = { module = "com.twitter.compose.rules:detekt", version.ref = "composeRules" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -198,6 +205,7 @@ layered-android-lint = { id = "layered.android.lint", version = "unspecified" }
 layered-android-test = { id = "layered.android.test", version = "unspecified" }
 layered-jvm-library = { id = "layered.jvm.library", version = "unspecified" }
 layered-android-application-flavors = { id = "layered.android.application.flavors", version = "unspecified" }
+jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
 
 # layered-android-application-firebase = { id = "layerd.android.application.firebase", version = "unspecified" }
 # layered-android-library-jacoco = { id = "layerd.android.library.jacoco", version = "unspecified" }

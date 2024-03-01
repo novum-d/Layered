@@ -22,7 +22,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Layered"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":core:model")
 include(":core:data")
 include(":core:domain")
+include(":core:ui")
