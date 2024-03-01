@@ -32,7 +32,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
       extensions.configure<LibraryExtension> {
         defaultConfig {
           testInstrumentationRunner =
-            "io.novumd.layered.core.testing.NiaTestRunner"
+            "io.novumd.layered.core.testing.LayeredTestRunner"
         }
         configureGradleManagedDevices(this)
       }

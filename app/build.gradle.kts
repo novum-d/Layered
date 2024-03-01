@@ -1,3 +1,5 @@
+import io.novumd.layered.LayeredBuildType
+
 plugins {
   alias(libs.plugins.layered.android.application)
   alias(libs.plugins.layered.android.application.compose)
@@ -21,19 +23,19 @@ android {
     versionName = "0.1.2" // X.Y.Z; X = Major, Y = minor, Z = Patch level
 
     // Custom test runner to set up Hilt dependency graph
-    // testInstrumentationRunner = "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
+    testInstrumentationRunner = "io.novumd.layered.core.testing.LayeredTestRunner"
     vectorDrawables {
       useSupportLibrary = true
     }
   }
 
   buildTypes {
-    // debug {
-    //   applicationIdSuffix = LayeredBuildType.DEBUG.applicationIdSuffix
-    // }
+    debug {
+      applicationIdSuffix = LayeredBuildType.DEBUG.applicationIdSuffix
+    }
     val release = getByName("release") {
       isMinifyEnabled = true
-      // applicationIdSuffix = NiaBuildType.RELEASE.applicationIdSuffix
+      applicationIdSuffix = LayeredBuildType.RELEASE.applicationIdSuffix
       // proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
       // To publish on the Play store a private signing key is required, but to allow anyone
@@ -52,7 +54,7 @@ android {
       // Only use benchmark proguard rules
       // proguardFiles("benchmark-rules.pro")
       // isMinifyEnabled = true
-      // applicationIdSuffix = NiaBuildType.BENCHMARK.applicationIdSuffix
+      applicationIdSuffix = LayeredBuildType.BENCHMARK.applicationIdSuffix
     }
   }
 
