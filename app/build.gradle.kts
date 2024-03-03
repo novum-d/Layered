@@ -119,10 +119,6 @@ dependencies {
   androidTestImplementation(libs.accompanist.testharness)
   androidTestImplementation(libs.hilt.android.testing)
 
-  implementation(libs.arrow.core)
-  implementation(libs.arrow.optics)
-  ksp(libs.arrow.opticsPlugin)
-
   testImplementation(libs.kotest.runnerJUnit5)
   testImplementation(libs.kotest.property)
   testImplementation(libs.kotest.assertionsArrow)
@@ -144,12 +140,3 @@ dependencies {
 // dependencyGuard {
 //   configuration("prodReleaseRuntimeClasspath")
 // }
-
-detekt {
-  autoCorrect = true
-  buildUponDefaultConfig = true
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
-  kotlinOptions.freeCompilerArgs = listOf("-Xcontext-receivers")
-}

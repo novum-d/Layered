@@ -16,7 +16,16 @@ plugins {
   // alias(libs.plugins.roborazzi) apply false
   // alias(libs.plugins.secrets) apply false
   // alias(libs.plugins.room) apply false
-
-  alias(libs.plugins.detekt) apply false
   alias(libs.plugins.jetbrainsKotlinAndroid) apply false
+
+  alias(libs.plugins.detekt)
+}
+
+detekt {
+  autoCorrect = true
+  buildUponDefaultConfig = true
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
+  kotlinOptions.freeCompilerArgs = listOf("-Xcontext-receivers")
 }
