@@ -6,4 +6,6 @@ sealed interface DomainError {
   data object Network : DomainError
   data object RequiredPassword : DomainError
   data object WrongPassword : DomainError
+
+  data object UserExists : DomainError
 }
