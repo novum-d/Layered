@@ -1,7 +1,6 @@
-package io.novumd.core.data
+package io.novumd.core.model
 
 import arrow.core.raise.Raise
-import io.novumd.core.model.DomainError
 
 
 interface User {
@@ -10,7 +9,7 @@ interface User {
 
   companion object {
 
-    context(Raise<DomainError.UserExists>, UserRepository)
+    context(Raise<DomainError.UserExists>, UserExistsRepository)
     fun from(
       id: String,
       name: String,
@@ -61,4 +60,8 @@ value class UserName(val value: String) {
       "UserName required more than length 3. But, value is $value"
     }
   }
+}
+
+interface UserExistsRepository {
+  fun find(id: UserId): User
 }

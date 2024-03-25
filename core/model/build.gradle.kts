@@ -11,3 +11,7 @@ dependencies {
   implementation(libs.arrow.optics)
   ksp(libs.arrow.opticsPlugin)
 }
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
+  kotlinOptions.freeCompilerArgs = listOf("-Xcontext-receivers")
+}
