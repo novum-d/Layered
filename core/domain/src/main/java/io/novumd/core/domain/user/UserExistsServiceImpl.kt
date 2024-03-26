@@ -1,9 +1,10 @@
 package io.novumd.core.domain.user
 
-import io.novumd.core.domain.UserExistsService
+import io.novumd.core.domain.UserExistsDomainService
+import io.novumd.core.model.UserId
 
-internal class UserExistsServiceImpl : UserExistsService {
-  override fun invoke() {
-    TODO("Not yet implemented")
+internal class UserExistsDomainServiceImpl : UserExistsDomainService {
+  override fun invoke(id: UserId) {
+    // TODO exists
   }
 }

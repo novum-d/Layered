@@ -9,7 +9,7 @@ interface User {
 
   companion object {
 
-    context(Raise<DomainError.UserExists>, UserExistsRepository)
+    context(Raise<DomainError.UserExists>, UserExistsCommand)
     fun from(
       id: String,
       name: String,
@@ -62,6 +62,6 @@ value class UserName(val value: String) {
   }
 }
 
-interface UserExistsRepository {
-  fun find(id: UserId): User
+fun interface UserExistsCommand {
+  operator fun invoke(id: UserId)
 }
