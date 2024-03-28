@@ -28,6 +28,17 @@ java {
   sourceCompatibility = JavaVersion.VERSION_17
   targetCompatibility = JavaVersion.VERSION_17
 }
+
+// Enable the exhaustive when statements
+kotlin {
+  sourceSets.all {
+    languageSettings.apply {
+      languageVersion = "1.6"
+      progressiveMode = true // false by default
+    }
+  }
+}
+
 tasks.withType<KotlinCompile>().configureEach {
   kotlinOptions {
     jvmTarget = JavaVersion.VERSION_17.toString()

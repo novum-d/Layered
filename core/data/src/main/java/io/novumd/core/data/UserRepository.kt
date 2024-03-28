@@ -1,13 +1,14 @@
 package io.novumd.core.data
 
 import io.novumd.core.model.User
+import io.novumd.core.model.UserFactoryCommand
 import io.novumd.core.model.UserId
 
 
-interface UserRepository {
+interface UserRepository : UserFactoryCommand {
   fun register(user: User)
 
-  fun isExists(id: UserId): User
+  override fun createUserId(): UserId
 }
 
 internal class UserRepositoryImpl : UserRepository {
@@ -15,7 +16,7 @@ internal class UserRepositoryImpl : UserRepository {
     TODO("Not yet implemented")
   }
 
-  override fun isExists(id: UserId): User {
+  override fun createUserId(): UserId {
     TODO("Not yet implemented")
   }
 }

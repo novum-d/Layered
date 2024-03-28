@@ -8,39 +8,25 @@ interface User {
   val name: UserName
 
   companion object {
-
-    context(Raise<DomainError.UserExists>, UserExistsCommand)
-    fun from(
-      id: String,
-      name: String,
-    ): User {
-      // raise(DomainError.UserExists)
-      return UserData(
-        id = id.let(::UserId),
+    context(Raise<DomainError.DatabaseError>, UserFactoryCommand)
+    fun from(name: String): User =
+      UserData(
+        id = createUserId(),
         name = name.let(::UserName),
       )
-    }
   }
+}
+
+interface UserFactoryCommand {
+  context(Raise<DomainError.DatabaseError>)
+  fun createUserId(): UserId
 }
 
 
 private data class UserData(
   override val id: UserId,
   override val name: UserName,
-) : User {
-
-  override fun equals(other: Any?): Boolean {
-    if (other !is User) return false
-    if (id != other.id) return false
-    return true
-  }
-
-  override fun hashCode(): Int {
-    var result = id.hashCode()
-    result = 31 * result + name.hashCode()
-    return result
-  }
-}
+) : User
 
 
 @JvmInline
@@ -60,8 +46,4 @@ value class UserName(val value: String) {
       "UserName required more than length 3. But, value is $value"
     }
   }
-}
-
-fun interface UserExistsCommand {
-  operator fun invoke(id: UserId)
 }
