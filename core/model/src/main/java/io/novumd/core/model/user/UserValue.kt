@@ -13,8 +13,24 @@ value class UserId(val value: String) {
 @JvmInline
 value class UserName(val value: String) {
   init {
-    require(value.length > 3) {
-      "UserName required more than length 3. But, value is $value"
+    val maxLength = 3
+    require(value.length > maxLength) {
+      "UserName required more than length $maxLength. But, value is $value"
+    }
+  }
+}
+
+@JvmInline
+value class UserPassword(val value: String) {
+  init {
+    val minLength = 22
+    require(value.length > minLength) {
+      "UserId required less than length $minLength. But, value is $value"
+    }
+
+    val pattern = """[\d]{4}"""
+    require("""^$pattern$""".toRegex().matches(value)) {
+      "UserId pattern is not matched."
     }
   }
 }

@@ -5,8 +5,9 @@ import io.novumd.core.data.UserRepository
 import io.novumd.core.domain.UserExistsDomainService
 import io.novumd.core.domain.UserRegisterUsecase
 import io.novumd.core.model.DomainError
-import io.novumd.core.model.UserRegisterUseCaseError
+import io.novumd.core.model.UserRegistrationError
 import io.novumd.core.model.user.User
+import io.novumd.core.model.user.UserRegisterCommand
 
 
 internal class UserRegisterUsecaseImpl(
@@ -14,15 +15,15 @@ internal class UserRegisterUsecaseImpl(
   private val userExistsDomainService: UserExistsDomainService,
 ) : UserRegisterUsecase {
 
-  context (Raise<UserRegisterUseCaseError>)
+  context (Raise<UserRegistrationError>)
   override fun invoke(command: UserRegisterCommand) {
-    val user = userRepository.run { User.from(command.name) }
+    val user = userRepository.run {
+      User.create(
+        command.name,
+        command.password,
+      )
+    }
     if (userExistsDomainService(user.id)) raise(DomainError.UserExists)
     userRepository.register(user)
   }
 }
-
-
-data class UserRegisterCommand(
-  val name: String,
-)
