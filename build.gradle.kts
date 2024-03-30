@@ -17,7 +17,7 @@ plugins {
   // alias(libs.plugins.gms) apply false
   // alias(libs.plugins.roborazzi) apply false
   // alias(libs.plugins.secrets) apply false
-  // alias(libs.plugins.room) apply false
+  alias(libs.plugins.room) apply false
   alias(libs.plugins.jetbrainsKotlinAndroid) apply false
 
   alias(libs.plugins.detekt)

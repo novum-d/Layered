@@ -1,8 +1,8 @@
 package io.novumd.core.data
 
-import io.novumd.core.model.User
-import io.novumd.core.model.UserFactoryCommand
-import io.novumd.core.model.UserId
+import io.novumd.core.model.user.User
+import io.novumd.core.model.user.UserFactoryCommand
+import io.novumd.core.model.user.UserId
 
 
 interface UserRepository : UserFactoryCommand {

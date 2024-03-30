@@ -50,7 +50,7 @@ dependencies {
   compileOnly(libs.android.tools.common)
   compileOnly(libs.kotlin.gradlePlugin)
   compileOnly(libs.ksp.gradlePlugin)
-  // compileOnly(libs.room.gradlePlugin)
+  compileOnly(libs.room.gradlePlugin)
   // implementation(libs.truth)
   // compileOnly(libs.firebase.crashlytics.gradlePlugin)
   // compileOnly(libs.firebase.performance.gradlePlugin)
@@ -113,10 +113,10 @@ gradlePlugin {
     //   id = "layered.android.library.jacoco"
     //   implementationClass = "AndroidLibraryJacocoConventionPlugin"
     // }
-    // register("androidRoom") {
-    //   id = "layered.android.room"
-    //   implementationClass = "AndroidRoomConventionPlugin"
-    // }
+    register("androidRoom") {
+      id = "layered.android.room"
+      implementationClass = "AndroidRoomConventionPlugin"
+    }
     // register("androidFirebase") {
     //   id = "layered.android.application.firebase"
     //   implementationClass = "AndroidApplicationFirebaseConventionPlugin"

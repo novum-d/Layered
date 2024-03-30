@@ -18,7 +18,7 @@ android {
 dependencies {
   project
   // api(projects.core.common)
-  // api(projects.core.database)
+  api(projects.core.database)
   // api(projects.core.datastore)
   api(projects.core.network)
 

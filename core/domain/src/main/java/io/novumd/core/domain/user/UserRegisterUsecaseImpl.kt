@@ -1,13 +1,12 @@
 package io.novumd.core.domain.user
 
-import arrow.core.Eval.Companion.raise
 import arrow.core.raise.Raise
 import io.novumd.core.data.UserRepository
 import io.novumd.core.domain.UserExistsDomainService
 import io.novumd.core.domain.UserRegisterUsecase
 import io.novumd.core.model.DomainError
-import io.novumd.core.model.User
 import io.novumd.core.model.UserRegisterUseCaseError
+import io.novumd.core.model.user.User
 
 
 internal class UserRegisterUsecaseImpl(
@@ -22,6 +21,7 @@ internal class UserRegisterUsecaseImpl(
     userRepository.register(user)
   }
 }
+
 
 data class UserRegisterCommand(
   val name: String,

@@ -1,5 +1,5 @@
 package io.novumd.core.domain
 
-fun interface UserUpdateInfoUsecase {
+fun interface UserUpdateUsecase {
   operator fun invoke()
 }
