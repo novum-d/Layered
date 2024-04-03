@@ -6,9 +6,7 @@ plugins {
 dependencies {
   api(libs.kotlinx.datetime)
   api(libs.arrow.core)
-
-  implementation(libs.arrow.core)
-  implementation(libs.arrow.optics)
+  api(libs.arrow.optics)
   ksp(libs.arrow.opticsPlugin)
 }
 

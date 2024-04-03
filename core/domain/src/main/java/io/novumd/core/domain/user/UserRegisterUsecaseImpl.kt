@@ -19,11 +19,14 @@ internal class UserRegisterUsecaseImpl(
   override fun invoke(command: UserRegisterCommand) {
     val user = userRepository.run {
       User.create(
-        command.name,
-        command.password,
+        name = command.name,
+        email = command.email,
+        password = command.password,
       )
     }
+
     if (userExistsDomainService(user.id)) raise(DomainError.UserExists)
+
     userRepository.register(user)
   }
 }

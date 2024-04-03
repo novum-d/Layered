@@ -21,6 +21,16 @@ value class UserName(val value: String) {
 }
 
 @JvmInline
+value class UserEmail(val value: String) {
+  init {
+    val pattern = """"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\$"""
+    require("""^$pattern$""".toRegex().matches(value)) {
+      "UserEmail is not email."
+    }
+  }
+}
+
+@JvmInline
 value class UserPassword(val value: String) {
   init {
     val minLength = 22
