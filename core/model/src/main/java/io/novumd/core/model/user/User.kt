@@ -1,7 +1,7 @@
 package io.novumd.core.model.user
 
 import arrow.core.raise.Raise
-import io.novumd.core.model.UserRegistrationError
+import io.novumd.core.model.UserRegisterDataError
 
 
 interface User {
@@ -12,7 +12,7 @@ interface User {
 
   companion object {
 
-    context(Raise<UserRegistrationError>, UserFactoryCommand)
+    context(Raise<UserRegisterDataError>, UserFactoryCommand)
     fun create(
       name: String,
       email: String,
@@ -25,13 +25,17 @@ interface User {
         password = password.let(::UserPassword),
       )
 
-    fun UserUpdateCommand.asExternalModel(): User =
-      UserData(
+    fun UserUpdateCommand.asExternalModel(): User {
+      requireNotNull(name)
+      requireNotNull(email)
+
+      return UserData(
         id = id.let(::UserId),
-        name = name?.let(::UserName) ?: throw IllegalArgumentException("UserName is null."),
-        email = email?.let(::UserEmail) ?: throw IllegalArgumentException("UserEmail is null."),
+        name = name.let(::UserName),
+        email = email.let(::UserEmail),
         password = password.let(::UserPassword),
       )
+    }
   }
 }
 
