@@ -6,9 +6,9 @@ import io.novumd.core.data.UserRepository
 import io.novumd.core.domain.UserUpdateUsecase
 import io.novumd.core.model.Err
 import io.novumd.core.model.UserUpdateDomainError
-import io.novumd.core.model.user.User.Companion.asExternalModel
 import io.novumd.core.model.user.UserId
 import io.novumd.core.model.user.UserUpdateCommand
+import io.novumd.core.model.user.asExternalModel
 
 internal class UserUpdateUsecaseImpl(
   private val userRepository: UserRepository,

@@ -24,18 +24,6 @@ interface User {
         email = email.let(::UserEmail),
         password = password.let(::UserPassword),
       )
-
-    fun UserUpdateCommand.asExternalModel(): User {
-      requireNotNull(name)
-      requireNotNull(email)
-
-      return UserData(
-        id = id.let(::UserId),
-        name = name.let(::UserName),
-        email = email.let(::UserEmail),
-        password = password.let(::UserPassword),
-      )
-    }
   }
 }
 
@@ -45,6 +33,14 @@ private data class UserData(
   override val email: UserEmail,
   override val password: UserPassword,
 ) : User
+
+
+fun UserUpdateCommand.asExternalModel(): User = UserData(
+  id = id.let(::UserId),
+  name = name!!.let(::UserName),
+  email = email!!.let(::UserEmail),
+  password = password.let(::UserPassword),
+)
 
 
 interface UserFactoryCommand {
