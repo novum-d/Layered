@@ -11,15 +11,22 @@ fun example() {
   }
 }
 
-// Domain Layer error type -> 〇〇DomainError
-// Data Layer error type-> 〇〇DataError
+/** Domain Layer error type */
+/* Usecase */
+// example: 〇〇UsecaseError
+sealed interface UserRegisterUsecaseError
+sealed interface UserUpdateUsecaseError
 
-/** User */
-sealed interface UserRegisterDomainError : UserRegisterDataError
-sealed interface UserRegisterDataError
+/* DomainService */
+// example: 〇〇DomainError
+sealed interface UserExistsDomainError : UserRegisterUsecaseError
 
-sealed interface UserUpdateDomainError : UserUpdateDataError
-sealed interface UserUpdateDataError
+/** Data Layer error type */
+// example: 〇〇DataError
+sealed interface UserRegisterDataError : UserRegisterUsecaseError
+sealed interface UserCreateIdDataError : UserRegisterUsecaseError
+sealed interface UserSaveDataError : UserUpdateUsecaseError
+sealed interface UserFindDataError : UserUpdateUsecaseError
 
 
 /** Error Type */
@@ -27,22 +34,22 @@ sealed interface Err {
 
   /** Domain Layer */
   data object PasswordNotMatched : Err,
-    UserUpdateDomainError
+    UserUpdateUsecaseError
 
   data object UserNotFound : Err,
-    UserUpdateDomainError
+    UserUpdateUsecaseError
 
   data object UserExists : Err,
-    UserRegisterDomainError
+    UserRegisterUsecaseError
 
 
   /** Data Layer */
   data object UnexpectedError : Err,
-    UserRegisterDataError, UserUpdateDataError
+    UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError
 
   data object DatabaseError : Err,
-    UserRegisterDataError, UserUpdateDataError
+    UserRegisterDataError, UserSaveDataError
 
   data object NetworkError : Err,
-    UserRegisterDataError, UserUpdateDataError
+    UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError
 }
