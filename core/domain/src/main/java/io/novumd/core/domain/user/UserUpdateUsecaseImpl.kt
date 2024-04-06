@@ -20,7 +20,7 @@ internal class UserUpdateUsecaseImpl(
   context (Raise<UserUpdateUsecaseError>)
   override fun invoke(updateCommand: UserUpdateCommand) {
     val userId = updateCommand.id.let(::UserId)
-    val user = userRepository.find(userId) ?: raise(Err.Domain.UserNotFound)
+    val user = userRepository.fetch(userId) ?: raise(Err.Domain.UserNotFound)
 
     ensure(updateCommand.password == user.password.value) {
       Err.Domain.PasswordNotMatched

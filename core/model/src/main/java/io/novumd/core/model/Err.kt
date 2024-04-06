@@ -4,9 +4,10 @@ package io.novumd.core.model
 fun example() {
   val err: UserRegisterUsecaseError = Err.Data.NetworkError
   when (err) {
+    Err.Domain.UserIdAlreadyExists -> TODO()
+    Err.Domain.UserEmailAlreadyExists -> TODO()
     Err.Data.NetworkError -> TODO()
     Err.Data.UnexpectedError -> TODO()
-    Err.Domain.UserAlreadyExists -> TODO()
     Err.Data.DatabaseError -> TODO()
   }
 }
@@ -27,7 +28,8 @@ sealed interface UserEmailExistsDomainServiceError : UserRegisterUsecaseError, U
 sealed interface UserRegisterDataError : UserRegisterUsecaseError
 sealed interface UserCreateIdDataError : UserRegisterUsecaseError
 sealed interface UserSaveDataError : UserUpdateUsecaseError
-sealed interface UserFindDataError : UserUpdateUsecaseError
+sealed interface UserFetchDataError : UserUpdateUsecaseError,
+  UserIdExistsDomainServiceError, UserEmailExistsDomainServiceError
 
 
 /** Error Type */
@@ -41,19 +43,22 @@ sealed interface Err {
     data object UserNotFound : Domain,
       UserUpdateUsecaseError
 
-    data object UserAlreadyExists : Domain,
-      UserRegisterUsecaseError
+    data object UserIdAlreadyExists : Domain,
+      UserIdExistsDomainServiceError
+
+    data object UserEmailAlreadyExists : Domain,
+      UserEmailExistsDomainServiceError
   }
 
   /** Data Layer */
   sealed interface Data : Err {
     data object UnexpectedError : Data,
-      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError
+      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFetchDataError
 
     data object DatabaseError : Data,
       UserRegisterDataError, UserSaveDataError
 
     data object NetworkError : Data,
-      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError
+      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFetchDataError
   }
 }
