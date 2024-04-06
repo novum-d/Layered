@@ -6,5 +6,5 @@ import io.novumd.core.model.user.UserUpdateCommand
 
 fun interface UserUpdateUsecase {
   context (Raise<UserUpdateUsecaseError>)
-  operator fun invoke(command: UserUpdateCommand)
+  operator fun invoke(updateCommand: UserUpdateCommand)
 }

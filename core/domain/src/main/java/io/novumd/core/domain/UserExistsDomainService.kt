@@ -1,11 +1,16 @@
 package io.novumd.core.domain
 
 import arrow.core.raise.Raise
-import io.novumd.core.model.UserExistsDomainError
+import io.novumd.core.model.UserEmailExistsDomainServiceError
+import io.novumd.core.model.UserIdExistsDomainServiceError
+import io.novumd.core.model.user.UserEmail
 import io.novumd.core.model.user.UserId
 
-fun interface UserExistsDomainService {
+interface UserExistsDomainService {
 
-  context(Raise<UserExistsDomainError>)
+  context(Raise<UserIdExistsDomainServiceError>)
   operator fun invoke(id: UserId)
+
+  context(Raise<UserEmailExistsDomainServiceError>)
+  operator fun invoke(id: UserEmail)
 }
