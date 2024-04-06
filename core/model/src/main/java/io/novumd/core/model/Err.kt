@@ -2,7 +2,7 @@ package io.novumd.core.model
 
 
 fun example() {
-  val err: UserRegisterDataError = Err.UserExists
+  val err: UserRegisterUsecaseError = Err.NetworkError
   when (err) {
     Err.UserExists -> {}
     Err.DatabaseError -> {}
