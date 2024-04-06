@@ -19,7 +19,7 @@ sealed interface UserUpdateUsecaseError
 
 /* DomainService */
 // example: 〇〇DomainError
-sealed interface UserExistsDomainError : UserRegisterUsecaseError
+sealed interface UserExistsDomainError : UserRegisterUsecaseError, UserUpdateUsecaseError
 
 /** Data Layer error type */
 // example: 〇〇DataError
