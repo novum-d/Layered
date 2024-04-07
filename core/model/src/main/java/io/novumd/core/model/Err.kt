@@ -1,5 +1,7 @@
 package io.novumd.core.model
 
+import arrow.core.NonEmptyList
+
 
 fun example() {
   val err: UserRegisterUsecaseError = Err.Data.NetworkError
@@ -9,6 +11,14 @@ fun example() {
     Err.Data.NetworkError -> TODO()
     Err.Data.UnexpectedError -> TODO()
     Err.Data.DatabaseError -> TODO()
+    is UserInvalid -> err.nel.forEach {
+      when (it) {
+        Err.Domain.UserInvalidError.UserEmailInvalid -> TODO()
+        Err.Domain.UserInvalidError.UserIdInvalid -> TODO()
+        Err.Domain.UserInvalidError.UserNameInvalid -> TODO()
+        Err.Domain.UserInvalidError.UserPasswordInvalid -> TODO()
+      }
+    }
   }
 }
 
@@ -24,6 +34,11 @@ sealed interface UserUpdateUsecaseError
 sealed interface UserIdExistsDomainServiceError : UserRegisterUsecaseError
 sealed interface UserEmailExistsDomainServiceError : UserRegisterUsecaseError, UserUpdateUsecaseError
 
+// UserInvalid
+data class UserInvalid(
+  val nel: NonEmptyList<Err.Domain.UserInvalidError>,
+) : UserRegisterUsecaseError, UserUpdateUsecaseError
+
 /** Data Layer error type */
 // example: 〇〇DataError
 sealed interface UserRegisterDataError : UserRegisterUsecaseError
@@ -38,7 +53,7 @@ sealed interface Err {
 
   /** Domain Layer */
   sealed interface Domain : Err {
-    sealed interface UserInvalidError : Domain {
+    sealed interface UserInvalidError : Domain, UserUpdateUsecaseError {
       data object UserIdInvalid : UserInvalidError
       data object UserNameInvalid : UserInvalidError
       data object UserPasswordInvalid : UserInvalidError

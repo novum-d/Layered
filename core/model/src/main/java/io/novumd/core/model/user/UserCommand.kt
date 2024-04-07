@@ -7,11 +7,24 @@ import arrow.optics.copy
 import arrow.optics.optics
 import io.novumd.core.model.Err
 
+interface UserCommand
+
 data class UserRegisterCommand(
   val name: String,
   val email: String,
   val password: String,
-)
+) : UserCommand
+
+context(Raise<NonEmptyList<Err.Domain.UserInvalidError>>)
+fun UserUpdateCommand.validate() {
+  zipOrAccumulate(
+    { id.let(::UserId).validate() },
+    { name?.let(::UserName)?.validate() },
+    { email?.let(::UserEmail)?.validate() },
+    { password.let(::UserPassword).validate() },
+  ) { _, _, _, _ ->
+  }
+}
 
 @optics
 data class UserUpdateCommand(
@@ -19,7 +32,7 @@ data class UserUpdateCommand(
   val name: String?,
   val email: String?,
   val password: String,
-) {
+) : UserCommand {
 
   operator fun invoke(
     name: String,
@@ -35,11 +48,11 @@ data class UserUpdateCommand(
 }
 
 context(Raise<NonEmptyList<Err.Domain.UserInvalidError>>)
-fun UserUpdateCommand.validate() {
+fun UserRegisterCommand.validate() {
   zipOrAccumulate(
-    { id.let(::UserId).validate() },
-    { name?.let(::UserName)?.validate() },
-    { email?.let(::UserEmail)?.validate() },
+    { name.let(::UserName).validate() },
+    { email.let(::UserEmail).validate() },
     { password.let(::UserPassword).validate() },
-  ) { _, _, _, _ -> }
+  ) { _, _, _ ->
+  }
 }
