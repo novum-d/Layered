@@ -5,4 +5,6 @@ package io.novumd.core.model
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+
+
 class ExampleUnitTest

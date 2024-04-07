@@ -13,6 +13,7 @@ fun example() {
 }
 
 /** Domain Layer error type */
+
 /* Usecase */
 // example: 〇〇UsecaseError
 sealed interface UserRegisterUsecaseError
@@ -37,17 +38,17 @@ sealed interface Err {
 
   /** Domain Layer */
   sealed interface Domain : Err {
-    data object PasswordNotMatched : Domain,
-      UserUpdateUsecaseError
+    sealed interface UserInvalidError : Domain {
+      data object UserIdInvalid : UserInvalidError
+      data object UserNameInvalid : UserInvalidError
+      data object UserPasswordInvalid : UserInvalidError
+      data object UserEmailInvalid : UserInvalidError
+    }
 
-    data object UserNotFound : Domain,
-      UserUpdateUsecaseError
-
-    data object UserIdAlreadyExists : Domain,
-      UserIdExistsDomainServiceError
-
-    data object UserEmailAlreadyExists : Domain,
-      UserEmailExistsDomainServiceError
+    data object PasswordNotMatched : Domain, UserUpdateUsecaseError
+    data object UserNotFound : Domain, UserUpdateUsecaseError
+    data object UserIdAlreadyExists : Domain, UserIdExistsDomainServiceError
+    data object UserEmailAlreadyExists : Domain, UserEmailExistsDomainServiceError
   }
 
   /** Data Layer */

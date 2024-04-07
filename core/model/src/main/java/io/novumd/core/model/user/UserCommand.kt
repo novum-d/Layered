@@ -1,7 +1,11 @@
 package io.novumd.core.model.user
 
+import arrow.core.NonEmptyList
+import arrow.core.raise.Raise
+import arrow.core.raise.zipOrAccumulate
 import arrow.optics.copy
 import arrow.optics.optics
+import io.novumd.core.model.Err
 
 data class UserRegisterCommand(
   val name: String,
@@ -28,4 +32,14 @@ data class UserUpdateCommand(
   }
 
   companion object
+}
+
+context(Raise<NonEmptyList<Err.Domain.UserInvalidError>>)
+fun UserUpdateCommand.validate() {
+  zipOrAccumulate(
+    { id.let(::UserId).validate() },
+    { name?.let(::UserName)?.validate() },
+    { email?.let(::UserEmail)?.validate() },
+    { password.let(::UserPassword).validate() },
+  ) { _, _, _, _ -> }
 }

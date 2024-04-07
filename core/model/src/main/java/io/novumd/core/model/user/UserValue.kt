@@ -1,46 +1,54 @@
 package io.novumd.core.model.user
 
+import arrow.core.raise.Raise
+import arrow.core.raise.ensure
+import io.novumd.core.model.Err
+
 @JvmInline
 value class UserId(val value: String) {
-  init {
+
+  context(Raise<Err.Domain.UserInvalidError.UserIdInvalid>)
+  fun validate() {
     val pattern = """[a-z]{4}"""
-    require("""^$pattern-$pattern$""".toRegex().matches(value)) {
-      "UserId pattern is not matched."
+    ensure("""^$pattern-$pattern$""".toRegex().matches(value)) {
+      Err.Domain.UserInvalidError.UserIdInvalid
     }
   }
 }
 
 @JvmInline
 value class UserName(val value: String) {
-  init {
+
+  context(Raise<Err.Domain.UserInvalidError.UserNameInvalid>)
+  fun validate() {
     val maxLength = 3
-    require(value.length > maxLength) {
-      "UserName required more than length $maxLength. But, value is $value"
+    ensure(value.length > maxLength) {
+      Err.Domain.UserInvalidError.UserNameInvalid
     }
   }
 }
 
 @JvmInline
 value class UserEmail(val value: String) {
-  init {
-    val pattern = """"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\$"""
-    require("""^$pattern$""".toRegex().matches(value)) {
-      "UserEmail is not email."
+
+  context(Raise<Err.Domain.UserInvalidError.UserEmailInvalid>)
+  fun validate() {
+    val pattern = """^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"""
+    ensure("""^$pattern$""".toRegex().matches(value)) {
+      Err.Domain.UserInvalidError.UserEmailInvalid
     }
   }
 }
 
 @JvmInline
 value class UserPassword(val value: String) {
-  init {
-    val minLength = 22
-    require(value.length > minLength) {
-      "UserId required less than length $minLength. But, value is $value"
-    }
 
+  context(Raise<Err.Domain.UserInvalidError.UserPasswordInvalid>)
+  fun validate() {
+    val minLength = 22
     val pattern = """[\d]{4}"""
-    require("""^$pattern$""".toRegex().matches(value)) {
-      "UserId pattern is not matched."
+    ensure(value.length > minLength && """^$pattern$""".toRegex().matches(value)) {
+      Err.Domain.UserInvalidError.UserPasswordInvalid
     }
   }
 }

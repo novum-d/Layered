@@ -16,13 +16,16 @@ internal class UserRegisterUsecaseImpl(
 ) : UserRegisterUsecase {
 
   context (Raise<UserRegisterUsecaseError>)
-  override fun invoke(command: UserRegisterCommand) {
-    existsUser(command.email.let(::UserEmail))
+  override fun invoke(registerCommand: UserRegisterCommand) {
+    val email = registerCommand.email.let(::UserEmail)
+
+    existsUser(email)
+
     val user = userRepository.run {
       User.create(
-        name = command.name,
-        email = command.email,
-        password = command.password,
+        name = registerCommand.name,
+        email = registerCommand.email,
+        password = registerCommand.password,
       )
     }
 
