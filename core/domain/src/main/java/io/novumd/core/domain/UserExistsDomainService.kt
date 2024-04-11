@@ -12,5 +12,5 @@ interface UserExistsDomainService {
   operator fun invoke(id: UserId)
 
   context(Raise<UserEmailExistsDomainServiceError>)
-  operator fun invoke(id: UserEmail)
+  operator fun invoke(email: UserEmail)
 }

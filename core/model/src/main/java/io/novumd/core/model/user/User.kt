@@ -11,7 +11,6 @@ interface User {
   val password: UserPassword
 
   companion object {
-
     context(Raise<UserRegisterDataError>, UserFactoryCommand)
     fun create(
       name: String,
@@ -27,6 +26,10 @@ interface User {
   }
 }
 
+interface UserFactoryCommand {
+  fun createId(): UserId
+}
+
 private data class UserData(
   override val id: UserId,
   override val name: UserName,
@@ -35,15 +38,9 @@ private data class UserData(
 ) : User
 
 
-fun UserUpdateCommand.asExternalModel(): User = UserData(
+fun UserUpdateCommand.asExternalModel(id: String): User = UserData(
   id = id.let(::UserId),
   name = name!!.let(::UserName),
   email = email!!.let(::UserEmail),
   password = password.let(::UserPassword),
 )
-
-
-interface UserFactoryCommand {
-  fun createId(): UserId
-}
-

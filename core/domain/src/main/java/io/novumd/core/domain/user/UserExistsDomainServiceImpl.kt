@@ -15,11 +15,11 @@ internal class UserExistsDomainServiceImpl(
 
   context(Raise<UserIdExistsDomainServiceError>)
   override fun invoke(id: UserId) {
-    userRepository.fetch(id) ?: raise(Err.Domain.UserIdAlreadyExists)
+    userRepository.find(id) ?: raise(Err.Domain.UserIdAlreadyExists)
   }
 
   context(Raise<UserEmailExistsDomainServiceError>)
-  override fun invoke(id: UserEmail) {
-    userRepository.fetch(id) ?: raise(Err.Domain.UserEmailAlreadyExists)
+  override fun invoke(email: UserEmail) {
+    userRepository.find(email) ?: raise(Err.Domain.UserEmailAlreadyExists)
   }
 }

@@ -14,7 +14,6 @@ fun example() {
     is UserInvalid -> err.nel.forEach {
       when (it) {
         Err.Domain.UserInvalidError.UserEmailInvalid -> TODO()
-        Err.Domain.UserInvalidError.UserIdInvalid -> TODO()
         Err.Domain.UserInvalidError.UserNameInvalid -> TODO()
         Err.Domain.UserInvalidError.UserPasswordInvalid -> TODO()
       }
@@ -44,7 +43,7 @@ data class UserInvalid(
 sealed interface UserRegisterDataError : UserRegisterUsecaseError
 sealed interface UserCreateIdDataError : UserRegisterUsecaseError
 sealed interface UserSaveDataError : UserUpdateUsecaseError
-sealed interface UserFetchDataError : UserUpdateUsecaseError,
+sealed interface UserFindDataError : UserUpdateUsecaseError,
   UserIdExistsDomainServiceError, UserEmailExistsDomainServiceError
 
 
@@ -54,7 +53,6 @@ sealed interface Err {
   /** Domain Layer */
   sealed interface Domain : Err {
     sealed interface UserInvalidError : Domain, UserUpdateUsecaseError {
-      data object UserIdInvalid : UserInvalidError
       data object UserNameInvalid : UserInvalidError
       data object UserPasswordInvalid : UserInvalidError
       data object UserEmailInvalid : UserInvalidError
@@ -69,12 +67,12 @@ sealed interface Err {
   /** Data Layer */
   sealed interface Data : Err {
     data object UnexpectedError : Data,
-      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFetchDataError
+      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError
 
     data object DatabaseError : Data,
-      UserRegisterDataError, UserSaveDataError
+      UserRegisterDataError, UserSaveDataError, UserFindDataError
 
     data object NetworkError : Data,
-      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFetchDataError
+      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError
   }
 }

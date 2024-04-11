@@ -10,7 +10,6 @@ import io.novumd.core.model.Err
 import io.novumd.core.model.UserInvalid
 import io.novumd.core.model.UserUpdateUsecaseError
 import io.novumd.core.model.user.UserEmail
-import io.novumd.core.model.user.UserId
 import io.novumd.core.model.user.UserUpdateCommand
 import io.novumd.core.model.user.asExternalModel
 import io.novumd.core.model.user.validate
@@ -23,26 +22,31 @@ internal class UserUpdateUsecaseImpl(
   context (Raise<UserUpdateUsecaseError>)
   override fun invoke(updateCommand: UserUpdateCommand) {
 
-    // validate input
+    // 1. 入力を検証
     recover({ updateCommand.validate() }) {
       raise(UserInvalid(it))
     }
 
-    val userId = updateCommand.id.let(::UserId)
-    val user = userRepository.fetch(userId) ?: raise(Err.Domain.UserNotFound)
+    // 2. ユーザが存在すること確認
+    val user = userRepository.load() ?: raise(Err.Domain.UserNotFound)
 
+    // 3. パスワードが一致することを確認
     ensure(updateCommand.password == user.password.value) {
       Err.Domain.PasswordNotMatched
     }
 
     val name = updateCommand.name ?: user.name.value
+
+    // 4. 同じメールアドレスを持つユーザが存在しないことを確認
     val email = updateCommand.email?.let {
       existsUserEmail(it.let(::UserEmail))
       it
     } ?: user.email.value
 
+    // 5. オプション項目の変更内容を反映
     updateCommand(name, email)
 
-    userRepository.save(updateCommand.asExternalModel())
+    // 6. ユーザの変更内容を保存
+    userRepository.save(updateCommand.asExternalModel(user.id.value))
   }
 }

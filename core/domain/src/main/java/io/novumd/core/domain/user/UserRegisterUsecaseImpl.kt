@@ -21,15 +21,15 @@ internal class UserRegisterUsecaseImpl(
   context (Raise<UserRegisterUsecaseError>)
   override fun invoke(registerCommand: UserRegisterCommand) {
 
-    // validate input
+    // 1. 入力を検証
     recover({ registerCommand.validate() }) {
       raise(UserInvalid(it))
     }
 
-    val email = registerCommand.email.let(::UserEmail)
+    // 2. 同じメールアドレスを持つユーザが存在しないことを確認
+    existsUser(registerCommand.email.let(::UserEmail))
 
-    existsUser(email)
-
+    // 3. ユーザーを作成
     val user = userRepository.run {
       User.create(
         name = registerCommand.name,
@@ -38,8 +38,10 @@ internal class UserRegisterUsecaseImpl(
       )
     }
 
+    // 4. 同じIDをもつユーザーが存在しないことを確認
     existsUser(user.id)
 
+    // 5. ユーザを登録
     userRepository.register(user)
   }
 }

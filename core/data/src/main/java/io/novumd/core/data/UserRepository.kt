@@ -2,7 +2,7 @@ package io.novumd.core.data
 
 import arrow.core.raise.Raise
 import io.novumd.core.model.UserCreateIdDataError
-import io.novumd.core.model.UserFetchDataError
+import io.novumd.core.model.UserFindDataError
 import io.novumd.core.model.UserRegisterDataError
 import io.novumd.core.model.UserSaveDataError
 import io.novumd.core.model.user.User
@@ -22,11 +22,14 @@ interface UserRepository : UserFactoryCommand {
   context (Raise<UserSaveDataError>)
   fun save(user: User)
 
-  context (Raise<UserFetchDataError>)
-  fun fetch(id: UserId): User?
+  context (Raise<UserFindDataError>)
+  fun find(id: UserId): User?
 
-  context (Raise<UserFetchDataError>)
-  fun fetch(id: UserEmail): User?
+  context (Raise<UserFindDataError>)
+  fun find(email: UserEmail): User?
+
+  context (Raise<UserFindDataError>)
+  fun load(): User?
 }
 
 internal class UserRepositoryImpl : UserRepository {
@@ -40,9 +43,12 @@ internal class UserRepositoryImpl : UserRepository {
   context (Raise<UserSaveDataError>)
   override fun save(user: User) = TODO()
 
-  context (Raise<UserFetchDataError>)
-  override fun fetch(id: UserId): User? = null
+  context (Raise<UserFindDataError>)
+  override fun find(id: UserId): User? = null
 
-  context (Raise<UserFetchDataError>)
-  override fun fetch(id: UserEmail): User? = null
+  context(Raise<UserFindDataError>)
+  override fun find(email: UserEmail): User? = null
+
+  context (Raise<UserFindDataError>)
+  override fun load(): User? = null
 }
