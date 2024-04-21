@@ -4,7 +4,7 @@ import arrow.core.NonEmptyList
 
 
 fun example() {
-  val err: UserRegisterUsecaseError = Err.Data.NetworkError
+  val err: UserRegisterUseCaseError = Err.Data.NetworkError
   when (err) {
     Err.Domain.UserIdAlreadyExists -> TODO()
     Err.Domain.UserEmailAlreadyExists -> TODO()
@@ -23,27 +23,27 @@ fun example() {
 
 /** Domain Layer error type */
 
-/* Usecase */
-// example: 〇〇UsecaseError
-sealed interface UserRegisterUsecaseError
-sealed interface UserUpdateUsecaseError
+/* UseCase */
+// example: 〇〇UseCaseError
+sealed interface UserRegisterUseCaseError
+sealed interface UserUpdateUseCaseError
 
 /* DomainService */
 // example: 〇〇DomainServiceError
-sealed interface UserIdExistsDomainServiceError : UserRegisterUsecaseError
-sealed interface UserEmailExistsDomainServiceError : UserRegisterUsecaseError, UserUpdateUsecaseError
+sealed interface UserIdExistsDomainServiceError : UserRegisterUseCaseError
+sealed interface UserEmailExistsDomainServiceError : UserRegisterUseCaseError, UserUpdateUseCaseError
 
 // UserInvalid
 data class UserInvalid(
   val nel: NonEmptyList<Err.Domain.UserInvalidError>,
-) : UserRegisterUsecaseError, UserUpdateUsecaseError
+) : UserRegisterUseCaseError, UserUpdateUseCaseError
 
 /** Data Layer error type */
 // example: 〇〇DataError
-sealed interface UserRegisterDataError : UserRegisterUsecaseError
-sealed interface UserCreateIdDataError : UserRegisterUsecaseError
-sealed interface UserSaveDataError : UserUpdateUsecaseError
-sealed interface UserFindDataError : UserUpdateUsecaseError,
+sealed interface UserRegisterDataError : UserRegisterUseCaseError
+sealed interface UserCreateIdDataError : UserRegisterUseCaseError
+sealed interface UserSaveDataError : UserUpdateUseCaseError
+sealed interface UserFindDataError : UserUpdateUseCaseError,
   UserIdExistsDomainServiceError, UserEmailExistsDomainServiceError
 
 
@@ -52,14 +52,14 @@ sealed interface Err {
 
   /** Domain Layer */
   sealed interface Domain : Err {
-    sealed interface UserInvalidError : Domain, UserUpdateUsecaseError {
+    sealed interface UserInvalidError : Domain, UserUpdateUseCaseError {
       data object UserNameInvalid : UserInvalidError
       data object UserPasswordInvalid : UserInvalidError
       data object UserEmailInvalid : UserInvalidError
     }
 
-    data object PasswordNotMatched : Domain, UserUpdateUsecaseError
-    data object UserNotFound : Domain, UserUpdateUsecaseError
+    data object PasswordNotMatched : Domain, UserUpdateUseCaseError
+    data object UserNotFound : Domain, UserUpdateUseCaseError
     data object UserIdAlreadyExists : Domain, UserIdExistsDomainServiceError
     data object UserEmailAlreadyExists : Domain, UserEmailExistsDomainServiceError
   }

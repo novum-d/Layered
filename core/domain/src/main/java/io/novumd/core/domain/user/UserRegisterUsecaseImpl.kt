@@ -4,21 +4,21 @@ import arrow.core.raise.Raise
 import arrow.core.raise.recover
 import io.novumd.core.data.UserRepository
 import io.novumd.core.domain.UserExistsDomainService
-import io.novumd.core.domain.UserRegisterUsecase
+import io.novumd.core.domain.UserRegisterUseCase
 import io.novumd.core.model.UserInvalid
-import io.novumd.core.model.UserRegisterUsecaseError
+import io.novumd.core.model.UserRegisterUseCaseError
 import io.novumd.core.model.user.User
 import io.novumd.core.model.user.UserEmail
 import io.novumd.core.model.user.UserRegisterCommand
 import io.novumd.core.model.user.validate
 
 
-internal class UserRegisterUsecaseImpl(
+internal class UserRegisterUseCaseImpl(
   private val userRepository: UserRepository,
   private val existsUser: UserExistsDomainService,
-) : UserRegisterUsecase {
+) : UserRegisterUseCase {
 
-  context (Raise<UserRegisterUsecaseError>)
+  context (Raise<UserRegisterUseCaseError>)
   override fun invoke(registerCommand: UserRegisterCommand) {
 
     // 1. 入力を検証

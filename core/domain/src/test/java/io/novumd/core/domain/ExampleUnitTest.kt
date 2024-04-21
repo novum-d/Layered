@@ -10,13 +10,13 @@ import java.io.IOException
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 
-class ExceptionUserRegisterUsecase : UserRegisterUsecase {
+class ExceptionUserRegisterUseCase : UserRegisterUseCase {
   override fun invoke() {
     throw IOException()
   }
 }
 
-class ExceptionUserRegisterUsecase : UserRegisterUsecase {
+class ExceptionUserRegisterUseCase : UserRegisterUseCase {
   override fun invoke() {
     throw IOException()
   }

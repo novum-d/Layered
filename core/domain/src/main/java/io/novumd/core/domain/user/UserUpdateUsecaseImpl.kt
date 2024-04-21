@@ -5,21 +5,25 @@ import arrow.core.raise.ensure
 import arrow.core.raise.recover
 import io.novumd.core.data.UserRepository
 import io.novumd.core.domain.UserExistsDomainService
-import io.novumd.core.domain.UserUpdateUsecase
+import io.novumd.core.domain.UserUpdateUseCase
 import io.novumd.core.model.Err
 import io.novumd.core.model.UserInvalid
-import io.novumd.core.model.UserUpdateUsecaseError
+import io.novumd.core.model.UserRegisterUseCaseError
+import io.novumd.core.model.UserUpdateUseCaseError
+import io.novumd.core.model.user.User
 import io.novumd.core.model.user.UserEmail
+import io.novumd.core.model.user.UserName
+import io.novumd.core.model.user.UserPassword
 import io.novumd.core.model.user.UserUpdateCommand
 import io.novumd.core.model.user.asExternalModel
 import io.novumd.core.model.user.validate
 
-internal class UserUpdateUsecaseImpl(
+internal class UserUpdateUseCaseImpl(
   private val userRepository: UserRepository,
   private val existsUserEmail: UserExistsDomainService,
-) : UserUpdateUsecase {
+) : UserUpdateUseCase {
 
-  context (Raise<UserUpdateUsecaseError>)
+  context (Raise<UserUpdateUseCaseError>)
   override fun invoke(updateCommand: UserUpdateCommand) {
 
     // 1. 入力を検証
@@ -50,3 +54,4 @@ internal class UserUpdateUsecaseImpl(
     userRepository.save(updateCommand.asExternalModel(user.id.value))
   }
 }
+
