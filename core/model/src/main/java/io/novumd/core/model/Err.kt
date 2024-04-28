@@ -6,18 +6,21 @@ import arrow.core.NonEmptyList
 fun example() {
   val err: UserRegisterUseCaseError = Err.Data.NetworkError
   when (err) {
+    // Domain Error
     Err.Domain.UserIdAlreadyExists -> TODO()
     Err.Domain.UserEmailAlreadyExists -> TODO()
+    is UserInvalidError -> err.nel.forEach {
+      when (it) {
+        Err.Domain.UserInvalid.Email -> TODO()
+        Err.Domain.UserInvalid.Name -> TODO()
+        Err.Domain.UserInvalid.Password -> TODO()
+      }
+    }
+
+    // Data Error
     Err.Data.NetworkError -> TODO()
     Err.Data.UnexpectedError -> TODO()
     Err.Data.DatabaseError -> TODO()
-    is UserInvalid -> err.nel.forEach {
-      when (it) {
-        Err.Domain.UserInvalidError.UserEmailInvalid -> TODO()
-        Err.Domain.UserInvalidError.UserNameInvalid -> TODO()
-        Err.Domain.UserInvalidError.UserPasswordInvalid -> TODO()
-      }
-    }
   }
 }
 
@@ -33,9 +36,9 @@ sealed interface UserUpdateUseCaseError
 sealed interface UserIdExistsDomainServiceError : UserRegisterUseCaseError
 sealed interface UserEmailExistsDomainServiceError : UserRegisterUseCaseError, UserUpdateUseCaseError
 
-// UserInvalid
-data class UserInvalid(
-  val nel: NonEmptyList<Err.Domain.UserInvalidError>,
+/* ValidationError */
+data class UserInvalidError(
+  val nel: NonEmptyList<Err.Domain.UserInvalid>,
 ) : UserRegisterUseCaseError, UserUpdateUseCaseError
 
 /** Data Layer error type */
@@ -47,15 +50,14 @@ sealed interface UserFindDataError : UserUpdateUseCaseError,
   UserIdExistsDomainServiceError, UserEmailExistsDomainServiceError
 
 
-/** Error Type */
+/** Handled Error Type */
 sealed interface Err {
 
-  /** Domain Layer */
   sealed interface Domain : Err {
-    sealed interface UserInvalidError : Domain, UserUpdateUseCaseError {
-      data object UserNameInvalid : UserInvalidError
-      data object UserPasswordInvalid : UserInvalidError
-      data object UserEmailInvalid : UserInvalidError
+    sealed interface UserInvalid : Domain, UserUpdateUseCaseError {
+      data object Name : UserInvalid
+      data object Password : UserInvalid
+      data object Email : UserInvalid
     }
 
     data object PasswordNotMatched : Domain, UserUpdateUseCaseError
@@ -64,7 +66,6 @@ sealed interface Err {
     data object UserEmailAlreadyExists : Domain, UserEmailExistsDomainServiceError
   }
 
-  /** Data Layer */
   sealed interface Data : Err {
     data object UnexpectedError : Data,
       UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError

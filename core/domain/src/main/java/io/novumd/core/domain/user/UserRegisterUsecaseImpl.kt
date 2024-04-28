@@ -5,7 +5,7 @@ import arrow.core.raise.recover
 import io.novumd.core.data.UserRepository
 import io.novumd.core.domain.UserExistsDomainService
 import io.novumd.core.domain.UserRegisterUseCase
-import io.novumd.core.model.UserInvalid
+import io.novumd.core.model.UserInvalidError
 import io.novumd.core.model.UserRegisterUseCaseError
 import io.novumd.core.model.user.User
 import io.novumd.core.model.user.UserEmail
@@ -21,15 +21,15 @@ internal class UserRegisterUseCaseImpl(
   context (Raise<UserRegisterUseCaseError>)
   override fun invoke(registerCommand: UserRegisterCommand) {
 
-    // 1. 入力を検証
+    // 1. Validate input
     recover({ registerCommand.validate() }) {
-      raise(UserInvalid(it))
+      raise(UserInvalidError(it))
     }
 
-    // 2. 同じメールアドレスを持つユーザが存在しないことを確認
+    // 2. Check that a user with the same email address does not exist.
     existsUser(registerCommand.email.let(::UserEmail))
 
-    // 3. ユーザーを作成
+    // 3. Create a user.
     val user = userRepository.run {
       User.create(
         name = registerCommand.name,
@@ -38,10 +38,10 @@ internal class UserRegisterUseCaseImpl(
       )
     }
 
-    // 4. 同じIDをもつユーザーが存在しないことを確認
+    // 4. Check that a user with the same ID does not exist.
     existsUser(user.id)
 
-    // 5. ユーザを登録
+    // 5. Register a user.
     userRepository.register(user)
   }
 }

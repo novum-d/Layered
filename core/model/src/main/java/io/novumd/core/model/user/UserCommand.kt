@@ -14,7 +14,7 @@ data class UserRegisterCommand(
   val password: String,
 )
 
-context(Raise<NonEmptyList<Err.Domain.UserInvalidError>>)
+context(Raise<NonEmptyList<Err.Domain.UserInvalid>>)
 fun UserRegisterCommand.validate() {
   zipOrAccumulate(
     { name.let(::UserName).validate() },
@@ -45,7 +45,7 @@ data class UserUpdateCommand(
   companion object
 }
 
-context(Raise<NonEmptyList<Err.Domain.UserInvalidError>>)
+context(Raise<NonEmptyList<Err.Domain.UserInvalid>>)
 fun UserUpdateCommand.validate() {
   zipOrAccumulate(
     { name?.let(::UserName)?.validate() },
