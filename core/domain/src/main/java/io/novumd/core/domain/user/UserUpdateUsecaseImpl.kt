@@ -9,11 +9,8 @@ import io.novumd.core.domain.UserExistsDomainService
 import io.novumd.core.domain.UserUpdateUseCase
 import io.novumd.core.model.Err
 import io.novumd.core.model.UserInvalidError
-import io.novumd.core.model.UserRegisterUseCaseError
 import io.novumd.core.model.UserUpdateUseCaseError
 import io.novumd.core.model.user.UserEmail
-import io.novumd.core.model.user.UserName
-import io.novumd.core.model.user.UserPassword
 import io.novumd.core.model.user.UserUpdateCommand
 import io.novumd.core.model.user.asExternalModel
 import io.novumd.core.model.user.validate
@@ -57,20 +54,4 @@ internal class UserUpdateUseCaseImpl(
     // 7. Save the user's changes.
     userRepository.save(updateCommand.asExternalModel(user.id.value))
   }
-}
-
-interface UserUseCase {
-  context (Raise<UserRegisterUseCaseError>)
-  fun registerUser(
-    name: UserName,
-    email: UserEmail,
-    password: UserPassword,
-  )
-
-  context (Raise<UserUpdateUseCaseError>)
-  fun updateUser(
-    name: UserName?,
-    email: UserEmail?,
-    password: UserPassword,
-  )
 }
