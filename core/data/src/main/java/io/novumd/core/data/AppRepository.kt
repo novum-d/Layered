@@ -1,16 +1,18 @@
 package io.novumd.core.data
 
 import arrow.core.raise.Raise
-import io.novumd.core.model.UserFindDataError
+import io.novumd.core.model.AppTamperedWithDataError
 
 internal class AppRepositoryImpl : AppRepository {
 
-  context(Raise<UserFindDataError>)
-  override fun isAppTamperedWith(): Boolean = false
+  context(Raise<AppTamperedWithDataError>)
+  override fun checkAppTamperedWith() {
+    // If the app has been tampered with, raise an error type
+  }
 }
 
 interface AppRepository {
 
-  context(Raise<UserFindDataError>)
-  fun isAppTamperedWith(): Boolean
+  context(Raise<AppTamperedWithDataError>)
+  fun checkAppTamperedWith()
 }

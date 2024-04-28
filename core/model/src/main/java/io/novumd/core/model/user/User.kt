@@ -1,7 +1,7 @@
 package io.novumd.core.model.user
 
 import arrow.core.raise.Raise
-import io.novumd.core.model.UserRegisterDataError
+import io.novumd.core.model.UserCreateIdDataError
 
 
 interface User {
@@ -11,7 +11,7 @@ interface User {
   val password: UserPassword
 
   companion object {
-    context(Raise<UserRegisterDataError>, UserFactoryCommand)
+    context(Raise<UserCreateIdDataError>, UserFactoryCommand)
     fun create(
       name: String,
       email: String,
@@ -27,6 +27,7 @@ interface User {
 }
 
 interface UserFactoryCommand {
+  context (Raise<UserCreateIdDataError>)
   fun createId(): UserId
 }
 

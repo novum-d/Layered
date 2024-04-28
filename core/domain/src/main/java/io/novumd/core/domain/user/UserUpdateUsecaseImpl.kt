@@ -33,28 +33,28 @@ internal class UserUpdateUseCaseImpl(
     }
 
     // 2. Check whether the app has been tampered with.
-    if (appRepository.isAppTamperedWith()) raise(Err.Data.DatabaseError)
+    appRepository.checkAppTamperedWith()
 
-    // 3. Check that the password matches.
-    val user = userRepository.load() ?: raise(Err.Domain.UserNotFound)
+    // 3. Fetch a user
+    val user = userRepository.fetch() ?: raise(Err.Domain.UserNotFound)
 
-    // 3. パスワードが一致することを確認
+    // 4. Check that the password matches.
     ensure(updateCommand.password == user.password.value) {
       Err.Domain.PasswordNotMatched
     }
 
     val name = updateCommand.name ?: user.name.value
 
-    // 4. Check that a user with the same email address does not exist.
+    // 5. Check that a user with the same email address does not exist.
     val email = updateCommand.email?.let {
       existsUserEmail(it.let(::UserEmail))
       it
     } ?: user.email.value
 
-    // 5. Update the command object.
+    // 6. Update the command object.
     updateCommand(name, email)
 
-    // 6. Save the user's changes.
+    // 7. Save the user's changes.
     userRepository.save(updateCommand.asExternalModel(user.id.value))
   }
 }

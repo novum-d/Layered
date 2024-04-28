@@ -49,6 +49,8 @@ sealed interface UserSaveDataError : UserUpdateUseCaseError
 sealed interface UserFindDataError : UserUpdateUseCaseError,
   UserIdExistsDomainServiceError, UserEmailExistsDomainServiceError
 
+sealed interface AppTamperedWithDataError : UserUpdateUseCaseError
+
 
 /** Handled Error Type */
 sealed interface Err {
@@ -68,12 +70,15 @@ sealed interface Err {
 
   sealed interface Data : Err {
     data object UnexpectedError : Data,
-      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError
+      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError,
+      AppTamperedWithDataError
 
     data object DatabaseError : Data,
-      UserRegisterDataError, UserSaveDataError, UserFindDataError
+      UserRegisterDataError, UserSaveDataError, UserFindDataError,
+      AppTamperedWithDataError
 
     data object NetworkError : Data,
-      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError
+      UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError,
+      AppTamperedWithDataError
   }
 }

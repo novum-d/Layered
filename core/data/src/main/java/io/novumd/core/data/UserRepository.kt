@@ -17,7 +17,7 @@ interface UserRepository : UserFactoryCommand {
   fun register(user: User)
 
   context (Raise<UserCreateIdDataError>)
-  override fun createId(): UserId // 重複確認はサーバー側で行う想定
+  override fun createId(): UserId
 
   context (Raise<UserSaveDataError>)
   fun save(user: User)
@@ -29,19 +29,19 @@ interface UserRepository : UserFactoryCommand {
   fun find(email: UserEmail): User?
 
   context (Raise<UserFindDataError>)
-  fun load(): User?
+  fun fetch(): User?
 }
 
 internal class UserRepositoryImpl : UserRepository {
 
   context (Raise<UserRegisterDataError>)
-  override fun register(user: User) = TODO()
+  override fun register(user: User) = run { }
 
   context (Raise<UserCreateIdDataError>)
-  override fun createId(): UserId = TODO()
+  override fun createId(): UserId = "i32".let(::UserId)
 
   context (Raise<UserSaveDataError>)
-  override fun save(user: User) = TODO()
+  override fun save(user: User) = run { }
 
   context (Raise<UserFindDataError>)
   override fun find(id: UserId): User? = null
@@ -50,5 +50,5 @@ internal class UserRepositoryImpl : UserRepository {
   override fun find(email: UserEmail): User? = null
 
   context (Raise<UserFindDataError>)
-  override fun load(): User? = null
+  override fun fetch(): User? = null
 }
