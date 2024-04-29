@@ -6,9 +6,9 @@ import io.novumd.core.model.UserCreateIdDataError
 
 interface User {
   val id: UserId
-  val name: UserName
-  val email: UserEmail
   val password: UserPassword
+  val name: UserName?
+  val email: UserEmail?
 
   companion object {
     context(Raise<UserCreateIdDataError>, UserFactoryCommand)
@@ -19,9 +19,9 @@ interface User {
     ): User =
       UserData(
         id = createId(),
+        password = password.let(::UserPassword),
         name = name.let(::UserName),
         email = email.let(::UserEmail),
-        password = password.let(::UserPassword),
       )
   }
 }
@@ -33,15 +33,15 @@ interface UserFactoryCommand {
 
 private data class UserData(
   override val id: UserId,
-  override val name: UserName,
-  override val email: UserEmail,
   override val password: UserPassword,
+  override val name: UserName? = null,
+  override val email: UserEmail? = null,
 ) : User
 
 
 fun UserUpdateCommand.asExternalModel(id: String): User = UserData(
   id = id.let(::UserId),
-  name = name!!.let(::UserName),
-  email = email!!.let(::UserEmail),
   password = password.let(::UserPassword),
+  name = name?.let(::UserName),
+  email = email?.let(::UserEmail),
 )

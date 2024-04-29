@@ -26,7 +26,7 @@ internal class UserUpdateUseCaseImpl(
 
     // 1. Validate input.
     recover({ updateCommand.validate() }) {
-      raise(UserInvalidError(it))
+      UserInvalidError(it)
     }
 
     // 2. Check whether the app has been tampered with.
@@ -40,13 +40,13 @@ internal class UserUpdateUseCaseImpl(
       Err.Domain.PasswordNotMatched
     }
 
-    val name = updateCommand.name ?: user.name.value
+    val name = updateCommand.name ?: user.name?.value
 
     // 5. Check that a user with the same email address does not exist.
     val email = updateCommand.email?.let {
       existsUserEmail(it.let(::UserEmail))
       it
-    } ?: user.email.value
+    } ?: user.email?.value
 
     // 6. Update the command object.
     updateCommand(name, email)

@@ -33,12 +33,12 @@ data class UserUpdateCommand(
 ) {
 
   operator fun invoke(
-    name: String,
-    email: String,
+    name: String?,
+    email: String?,
   ) {
     copy {
-      UserUpdateCommand.name set name
-      UserUpdateCommand.email set email
+      UserUpdateCommand.nullableName set name
+      UserUpdateCommand.nullableEmail set email
     }
   }
 
@@ -48,9 +48,9 @@ data class UserUpdateCommand(
 context(Raise<NonEmptyList<Err.Domain.UserInvalid>>)
 fun UserUpdateCommand.validate() {
   zipOrAccumulate(
+    { password.let(::UserPassword).validate() },
     { name?.let(::UserName)?.validate() },
     { email?.let(::UserEmail)?.validate() },
-    { password.let(::UserPassword).validate() },
   ) { _, _, _ ->
   }
 }

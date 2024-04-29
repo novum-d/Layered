@@ -2,13 +2,15 @@ package io.novumd.core.model.user
 
 data class UserEntity(
   val id: String,
-  val name: String,
   val password: String,
+  val name: String?,
+  val email: String?,
 )
 
 fun User.asEntity() =
   UserEntity(
     id = id.value,
-    name = name.value,
     password = password.value,
+    name = name?.value,
+    email = email?.value,
   )
