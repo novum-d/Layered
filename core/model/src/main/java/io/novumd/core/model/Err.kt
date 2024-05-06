@@ -35,6 +35,7 @@ sealed interface UserUpdateUseCaseError
 // example: 〇〇DomainServiceError
 sealed interface UserIdExistsDomainServiceError : UserRegisterUseCaseError
 sealed interface UserEmailExistsDomainServiceError : UserRegisterUseCaseError, UserUpdateUseCaseError
+sealed interface AppTamperedWithDomainServiceError : UserUpdateUseCaseError
 
 /* ValidationError */
 data class UserInvalidError(
@@ -49,7 +50,7 @@ sealed interface UserSaveDataError : UserUpdateUseCaseError
 sealed interface UserFindDataError : UserUpdateUseCaseError,
     UserIdExistsDomainServiceError, UserEmailExistsDomainServiceError
 
-sealed interface AppTamperedWithDataError : UserUpdateUseCaseError
+sealed interface AppTamperedWithDataError : AppTamperedWithDomainServiceError
 
 
 /** Handled Error Type */
