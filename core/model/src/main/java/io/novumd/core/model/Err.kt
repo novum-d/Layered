@@ -4,23 +4,23 @@ import arrow.core.NonEmptyList
 
 
 fun example() {
-    when (val err: UserRegisterUseCaseError = Err.Data.NetworkError) {
+    when (val err: UserUpdateUseCaseError = DataErr.Network) {
         // Domain Error
-        Err.Domain.UserIdAlreadyExists -> TODO()
-        Err.Domain.UserEmailAlreadyExists -> TODO()
-        is UserInvalidError -> err.nel.forEach {
+        DomainErr.UserEmailAlreadyExists -> TODO()
+        DomainErr.PasswordNotMatched -> TODO()
+        DomainErr.UserNotFound -> TODO()
+        is UserInputError -> err.nel.forEach {
             when (it) {
-                Err.Domain.UserInvalid.Id -> TODO()
-                Err.Domain.UserInvalid.Email -> TODO()
-                Err.Domain.UserInvalid.Name -> TODO()
-                Err.Domain.UserInvalid.Password -> TODO()
+                DomainErr.UserInput.Email -> TODO()
+                DomainErr.UserInput.Name -> TODO()
+                DomainErr.UserInput.Password -> TODO()
             }
         }
 
         // Data Error
-        Err.Data.NetworkError -> TODO()
-        Err.Data.UnexpectedError -> TODO()
-        Err.Data.DatabaseError -> TODO()
+        DataErr.Network -> TODO()
+        DataErr.Unexpected -> TODO()
+        DataErr.Database -> TODO()
     }
 }
 
@@ -38,8 +38,8 @@ sealed interface UserEmailExistsDomainServiceError : UserRegisterUseCaseError, U
 sealed interface AppTamperedWithDomainServiceError : UserUpdateUseCaseError
 
 /* ValidationError */
-data class UserInvalidError(
-    val nel: NonEmptyList<Err.Domain.UserInvalid>,
+data class UserInputError(
+    val nel: NonEmptyList<DomainErr.UserInput>,
 ) : UserRegisterUseCaseError, UserUpdateUseCaseError
 
 /** Data Layer error type */
@@ -54,33 +54,32 @@ sealed interface AppTamperedWithDataError : AppTamperedWithDomainServiceError
 
 
 /** Handled Error Type */
-sealed interface Err {
+sealed interface Err
 
-    sealed interface Domain : Err {
-        sealed interface UserInvalid : Domain, UserUpdateUseCaseError {
-            data object Id : UserInvalid
-            data object Name : UserInvalid
-            data object Password : UserInvalid
-            data object Email : UserInvalid
-        }
-
-        data object PasswordNotMatched : Domain, UserUpdateUseCaseError
-        data object UserNotFound : Domain, UserUpdateUseCaseError
-        data object UserIdAlreadyExists : Domain, UserIdExistsDomainServiceError
-        data object UserEmailAlreadyExists : Domain, UserEmailExistsDomainServiceError
+sealed interface DomainErr : Err {
+    sealed interface UserInput : DomainErr {
+        data object Name : UserInput
+        data object Password : UserInput
+        data object Email : UserInput
     }
 
-    sealed interface Data : Err {
-        data object UnexpectedError : Data,
-            UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError,
-            AppTamperedWithDataError
-
-        data object DatabaseError : Data,
-            UserRegisterDataError, UserSaveDataError, UserFindDataError,
-            AppTamperedWithDataError
-
-        data object NetworkError : Data,
-            UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError,
-            AppTamperedWithDataError
-    }
+    data object PasswordNotMatched : DomainErr, UserUpdateUseCaseError
+    data object UserNotFound : DomainErr, UserUpdateUseCaseError
+    data object UserIdAlreadyExists : DomainErr, UserIdExistsDomainServiceError
+    data object UserEmailAlreadyExists : DomainErr, UserEmailExistsDomainServiceError
 }
+
+sealed interface DataErr : Err {
+    data object Unexpected : DataErr,
+        UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError,
+        AppTamperedWithDataError
+
+    data object Database : DataErr,
+        UserRegisterDataError, UserSaveDataError, UserFindDataError,
+        AppTamperedWithDataError
+
+    data object Network : DataErr,
+        UserRegisterDataError, UserSaveDataError, UserCreateIdDataError, UserFindDataError,
+        AppTamperedWithDataError
+}
+

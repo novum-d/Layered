@@ -5,7 +5,7 @@ import arrow.core.raise.recover
 import io.novumd.core.data.UserRepository
 import io.novumd.core.domain.UserExistsDomainService
 import io.novumd.core.domain.UserRegisterUseCase
-import io.novumd.core.model.UserInvalidError
+import io.novumd.core.model.UserInputError
 import io.novumd.core.model.UserRegisterUseCaseError
 import io.novumd.core.model.user.User
 import io.novumd.core.model.user.UserEmail
@@ -23,7 +23,7 @@ internal class UserRegisterUseCaseImpl(
 
     // 1. Validate input
     recover({ registerCommand.validate() }) {
-      raise(UserInvalidError(it))
+      raise(UserInputError(it))
     }
 
     // 2. Check that a user with the same email address does not exist.

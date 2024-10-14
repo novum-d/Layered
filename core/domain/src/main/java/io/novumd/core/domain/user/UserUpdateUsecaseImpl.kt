@@ -7,8 +7,7 @@ import io.novumd.core.data.UserRepository
 import io.novumd.core.domain.AppTamperedWithDomainService
 import io.novumd.core.domain.UserExistsDomainService
 import io.novumd.core.domain.UserUpdateUseCase
-import io.novumd.core.model.Err
-import io.novumd.core.model.UserInvalidError
+import io.novumd.core.model.UserInputError
 import io.novumd.core.model.UserUpdateUseCaseError
 import io.novumd.core.model.user.UserEmail
 import io.novumd.core.model.user.UserUpdateCommand
@@ -26,18 +25,18 @@ internal class UserUpdateUseCaseImpl(
 
     // 1. Validate input.
     recover({ updateCommand.validate() }) {
-      UserInvalidError(it)
+      UserInputError(it)
     }
 
     // 2. Check whether the app has been tampered with.
     checkAppTamperedWith()
 
     // 3. Fetch a user
-    val user = userRepository.fetch() ?: raise(Err.Domain.UserNotFound)
+    val user = userRepository.fetch() ?: raise(DomainErr.UserNotFound)
 
     // 4. Check that the password matches.
     ensure(updateCommand.password == user.password.value) {
-      Err.Domain.PasswordNotMatched
+      DomainErr.PasswordNotMatched
     }
 
     val name = updateCommand.name ?: user.name?.value

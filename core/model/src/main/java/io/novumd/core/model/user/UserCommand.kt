@@ -5,6 +5,7 @@ import arrow.core.raise.Raise
 import arrow.core.raise.zipOrAccumulate
 import arrow.optics.copy
 import arrow.optics.optics
+import io.novumd.core.model.DomainErr
 import io.novumd.core.model.Err
 
 
@@ -14,7 +15,7 @@ data class UserRegisterCommand(
   val password: String,
 )
 
-context(Raise<NonEmptyList<Err.Domain.UserInvalid>>)
+context(Raise<NonEmptyList<DomainErr.UserInput>>)
 fun UserRegisterCommand.validate() {
   zipOrAccumulate(
     { name.let(::UserName).validate() },
@@ -45,7 +46,7 @@ data class UserUpdateCommand(
   companion object
 }
 
-context(Raise<NonEmptyList<Err.Domain.UserInvalid>>)
+context(Raise<NonEmptyList<DomainErr.UserInput>>)
 fun UserUpdateCommand.validate() {
   zipOrAccumulate(
     { password.let(::UserPassword).validate() },
